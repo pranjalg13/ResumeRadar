@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GetAJob - Resume Analyzer</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title>Resume-Radar: Analyze Resume with AI </title>
+    <link rel="icon" href="https://img.icons8.com/color/48/resume.png" type="image/x-icon" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
 
@@ -39,6 +39,9 @@
                         class="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl font-bold">
                         Analyze <!-- Changed button text to Analyze -->
                     </button>
+                </div>
+                <div class="flex justify-center">
+                    <small id="retryMessage" class="text-red-500 hidden">Failed to submit. Please retry.</small>
                 </div>
             </form>
             <div class="flex justify-center">
@@ -86,7 +89,7 @@
     </div>
 
     <script>
-        console.log("Hello world!");
+        console.log("================= Nice Work Developer: Looking into the console =================");
         document
             .getElementById("resumeForm")
             .addEventListener("submit", function (event) {
@@ -141,11 +144,14 @@
                         progressCircle.style.strokeDashoffset = offset;
 
                         // Handle the response from the server
-                        displayResults("positiveBox", data['resume']["positives"]);
+                        displayResults("positiveBox", data['resume']["positivwes"]);
                         displayResults("dropBox", data['resume']["drop"]);
                         displayResults("addBox", data['resume']["add_from_job_description"]);
+                        document.getElementById("retryMessage").classList.add("hidden");
+
                     })
                     .catch((error) => {
+                        document.getElementById("retryMessage").classList.remove("hidden");
                         // Handle errors
                         document.getElementById("loader").classList.add("hidden"); // Hide loader
 

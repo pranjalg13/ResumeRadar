@@ -77,10 +77,7 @@ async function runChat(userInput) {
   });
 
   const result = await chat.sendMessage(userInput);
-  console.log("result", result);
   const response = result.response;
-  console.log("response" + response);
-  console.log(response.text());
   return response.text();
 }
 
