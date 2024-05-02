@@ -23,23 +23,23 @@
             </div>
             <br />
             <br />
-            <form id="resumeForm" class="mb-5">
-                <label class="block text-sm font-medium text-white" for="file_input">Upload
-                    file</label>
+            <form id="resumeForm" class="mb-5" enctype="multipart/form-data">
+                <label class="block text-lg font-medium text-white" for="file_input">Upload Resume:</label>
                 <input
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="file_input" type="file" />
-
-                <br />
-                <div class="mb-4">
-                    <label for="jobDescription" class="block text-sm font-medium text-white">Job Description:</label>
+                    id="file_input" type="file" accept=".doc, .docx, .pdf" maxlength="5242880" />
+                <small class="text-gray-400 text-sm block mb-2">Allowed formats: .doc, .docx, .pdf | Max size: 5MB</small> <!-- Added margin-bottom (mb-2) -->
+                <div class="mb-4"> <!-- Added margin-bottom (mb-4) -->
+                    <label for="jobDescription" class="block text-lg font-medium text-white">Job Description:</label>
                     <textarea id="jobDescription" name="jobDescription" rows="4"
                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
                 </div>
-                <button type="submit"
-                    class="inline-block w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4 sm:mb-0">
-                    Submit
-                </button>
+                <div class="flex justify-center"> <!-- Center the button -->
+                    <button type="submit"
+                        class="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl font-bold">
+                        Analyze <!-- Changed button text to Analyze -->
+                    </button>
+                </div>
             </form>
             <div class="flex justify-center">
                 <div class="relative inline-block w-20 h-20 rounded-full overflow-hidden">
@@ -56,22 +56,26 @@
             </div>
 
             <br>
-            <!-- TODO: Add a radial progress component -->
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div id="positiveBox" class="bg-green-100 p-4 rounded shadow-md">
                     <h2 class="text-lg font-bold mb-2">Positives</h2>
+                    <small class="text-gray-400 text-sm">Displays best positive points from resume</small>
                     <ul id="positivesList" class="list-disc pl-5">
                         <!-- Positive points will be dynamically added here -->
                     </ul>
                 </div>
                 <div id="dropBox" class="bg-red-100 p-4 rounded shadow-md">
                     <h2 class="text-lg font-bold mb-2">Drop</h2>
+                    <small class="text-gray-400 text-sm">Points that can be removed from resume</small>
                     <ul id="dropList" class="list-disc pl-5">
                         <!-- Points to drop will be dynamically added here -->
                     </ul>
                 </div>
                 <div id="addBox" class="bg-yellow-100 p-4 rounded shadow-md">
                     <h2 class="text-lg font-bold mb-2">Add</h2>
+                    <small class="text-gray-400 text-sm">Enhance resume with additional points.
+                    </small>
                     <ul id="addList" class="list-disc pl-5">
                         <!-- Points to add will be dynamically added here -->
                     </ul>
