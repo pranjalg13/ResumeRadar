@@ -11,50 +11,76 @@
 
 <body class="bg-gradient-to-br from-gray-800 to-gray-900">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="mb-4 text-3xl font-bold text-white">
-            GetAJob - Resume Analyzer
-        </h1>
-        <br />
-        <br />
-        <form id="resumeForm" class="mb-8">
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload
-                file</label>
-            <input
-                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                id="file_input" type="file" />
-
+        <!-- Loader -->
+        <div id="loader"
+            class="flex justify-center items-center h-screen bg-gray-900 bg-opacity-50 fixed inset-0 hidden">
+            <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+        <div class="container mx-auto px-4 py-8">
+            <div class="mt-1 mb-2 text-center">
+                <h1 class="mb-2 text-4xl font-bold text-white">ResumeRadar</h1>
+                <p class="text-sm text-gray-100">Your Personal Resume Analyzer</p>
+            </div>
             <br />
-            <div class="mb-4">
-                <label for="jobDescription" class="block text-sm font-medium text-white">Job Description:</label>
-                <textarea id="jobDescription" name="jobDescription" rows="4"
-                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            <br />
+            <form id="resumeForm" class="mb-5">
+                <label class="block text-sm font-medium text-white" for="file_input">Upload
+                    file</label>
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="file_input" type="file" />
+
+                <br />
+                <div class="mb-4">
+                    <label for="jobDescription" class="block text-sm font-medium text-white">Job Description:</label>
+                    <textarea id="jobDescription" name="jobDescription" rows="4"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                </div>
+                <button type="submit"
+                    class="inline-block w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4 sm:mb-0">
+                    Submit
+                </button>
+            </form>
+            <div class="flex justify-center">
+                <div class="relative inline-block w-20 h-20 rounded-full overflow-hidden">
+                    <svg class="w-full h-full text-gray-200 stroke-current" viewBox="0 0 100 100">
+                        <circle id="progressCircle" class="text-blue-500 stroke-width-2" cx="50" cy="50" r="40"
+                            stroke-dasharray="251.2" stroke-dashoffset="0"></circle>
+                        <circle class="absolute inset-0 top-0 right-0 bottom-0 left-0 bg-gray-800 animate-spin">
+                        </circle>
+                    </svg>
+                    <div class="absolute inset-0 flex justify-center items-center">
+                        <p id='resume-score' class="text-white text-xl font-bold">0%</p>
+                    </div>
+                </div>
             </div>
-            <button type="submit"
-                class="inline-block w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4 sm:mb-0">
-                Submit
-            </button>
-        </form>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div id="positiveBox" class="bg-green-100 p-4 rounded shadow-md">
-                <h2 class="text-lg font-bold mb-2">Positives</h2>
-                <ul id="positivesList" class="list-disc pl-5">
-                    <!-- Positive points will be dynamically added here -->
-                </ul>
-            </div>
-            <div id="dropBox" class="bg-red-100 p-4 rounded shadow-md">
-                <h2 class="text-lg font-bold mb-2">Drop</h2>
-                <ul id="dropList" class="list-disc pl-5">
-                    <!-- Points to drop will be dynamically added here -->
-                </ul>
-            </div>
-            <div id="addBox" class="bg-yellow-100 p-4 rounded shadow-md">
-                <h2 class="text-lg font-bold mb-2">Add</h2>
-                <ul id="addList" class="list-disc pl-5">
-                    <!-- Points to add will be dynamically added here -->
-                </ul>
+
+            <br>
+            <!-- TODO: Add a radial progress component -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div id="positiveBox" class="bg-green-100 p-4 rounded shadow-md">
+                    <h2 class="text-lg font-bold mb-2">Positives</h2>
+                    <ul id="positivesList" class="list-disc pl-5">
+                        <!-- Positive points will be dynamically added here -->
+                    </ul>
+                </div>
+                <div id="dropBox" class="bg-red-100 p-4 rounded shadow-md">
+                    <h2 class="text-lg font-bold mb-2">Drop</h2>
+                    <ul id="dropList" class="list-disc pl-5">
+                        <!-- Points to drop will be dynamically added here -->
+                    </ul>
+                </div>
+                <div id="addBox" class="bg-yellow-100 p-4 rounded shadow-md">
+                    <h2 class="text-lg font-bold mb-2">Add</h2>
+                    <ul id="addList" class="list-disc pl-5">
+                        <!-- Points to add will be dynamically added here -->
+                    </ul>
+                </div>
             </div>
         </div>
+
     </div>
+
     <script>
         console.log("Hello world!");
         document
@@ -85,6 +111,8 @@
                 formData.append("jobDescription", jobDescription);
                 console.log(resumeFile);
 
+                document.getElementById("loader").classList.remove("hidden"); // Show loader
+
                 // Make a POST request to the server
                 fetch("/pdf", {
                     method: "POST",
@@ -93,40 +121,32 @@
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data);
+                        document.getElementById("loader").classList.add("hidden"); // Hide loader
+
+
+                        const score = data['resume']["score"];
+                        const progressCircle = document.getElementById("progressCircle");
+                        const resumeScore = document.getElementById("resume-score");
+
+                        // Update the score text
+                        resumeScore.textContent = `${score}%`;
+
+                        // Calculate stroke-dashoffset based on the score
+                        const circumference = 2 * Math.PI * 40; // Circumference of the circle
+                        const offset = circumference - (circumference * score) / 100;
+                        progressCircle.style.strokeDashoffset = offset;
+
                         // Handle the response from the server
+                        displayResults("positiveBox", data['resume']["positives"]);
+                        displayResults("dropBox", data['resume']["drop"]);
+                        displayResults("addBox", data['resume']["add_from_job_description"]);
                     })
                     .catch((error) => {
                         // Handle errors
+                        document.getElementById("loader").classList.add("hidden"); // Hide loader
+
                         console.error(error);
                     });
-
-                // Simulate processing and analyze resume against job description
-                // In a real application, you would send this data to a server for processing
-                setTimeout(function () {
-                    // Simulate positive points from the resume
-                    const positives = [
-                        "Experience in web development",
-                        "Strong communication skills",
-                        "Proficient in JavaScript",
-                    ];
-
-                    // Simulate points to drop from the resume
-                    const drop = [
-                        "Outdated certifications",
-                        "Irrelevant work experience",
-                    ];
-
-                    // Simulate points to add to the resume
-                    const add = [
-                        "Familiarity with React framework",
-                        "Experience with agile methodologies",
-                    ];
-
-                    // Display results in respective boxes
-                    displayResults("positiveBox", positives);
-                    displayResults("dropBox", drop);
-                    displayResults("addBox", add);
-                }, 2000); // Simulate processing delay
             });
 
         function displayResults(containerId, data) {
