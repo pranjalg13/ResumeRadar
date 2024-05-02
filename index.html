@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GetAJob - Resume Analyzer</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gradient-to-br from-gray-800 to-gray-900">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="mb-4 text-3xl font-bold text-white">
+            GetAJob - Resume Analyzer
+        </h1>
+        <br />
+        <br />
+        <form id="resumeForm" class="mb-8">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload
+                file</label>
+            <input
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                id="file_input" type="file" />
+
+            <br />
+            <div class="mb-4">
+                <label for="jobDescription" class="block text-sm font-medium text-white">Job Description:</label>
+                <textarea id="jobDescription" name="jobDescription" rows="4"
+                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+            </div>
+            <button type="submit"
+                class="inline-block w-full sm:w-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4 sm:mb-0">
+                Submit
+            </button>
+        </form>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div id="positiveBox" class="bg-green-100 p-4 rounded shadow-md">
+                <h2 class="text-lg font-bold mb-2">Positives</h2>
+                <ul id="positivesList" class="list-disc pl-5">
+                    <!-- Positive points will be dynamically added here -->
+                </ul>
+            </div>
+            <div id="dropBox" class="bg-red-100 p-4 rounded shadow-md">
+                <h2 class="text-lg font-bold mb-2">Drop</h2>
+                <ul id="dropList" class="list-disc pl-5">
+                    <!-- Points to drop will be dynamically added here -->
+                </ul>
+            </div>
+            <div id="addBox" class="bg-yellow-100 p-4 rounded shadow-md">
+                <h2 class="text-lg font-bold mb-2">Add</h2>
+                <ul id="addList" class="list-disc pl-5">
+                    <!-- Points to add will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        console.log("Hello world!");
+        document
+            .getElementById("resumeForm")
+            .addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent form submission
+
+                // Get the uploaded resume file
+                const resumeFile = document.getElementById("file_input").files[0];
+                console.log(resumeFile);
+                if (!resumeFile) {
+                    alert("Please upload a resume file.");
+                    return;
+                }
+
+                // Get the job description text
+                const jobDescription = document
+                    .getElementById("jobDescription")
+                    .value.trim();
+                if (jobDescription === "") {
+                    alert("Please enter a job description.");
+                    return;
+                }
+
+                // Create a FormData object to send the data
+                const formData = new FormData();
+                formData.append("resume", resumeFile);
+                formData.append("jobDescription", jobDescription);
+                console.log(resumeFile);
+
+                // Make a POST request to the server
+                fetch("/pdf", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        // Handle the response from the server
+                    })
+                    .catch((error) => {
+                        // Handle errors
+                        console.error(error);
+                    });
+
+                // Simulate processing and analyze resume against job description
+                // In a real application, you would send this data to a server for processing
+                setTimeout(function () {
+                    // Simulate positive points from the resume
+                    const positives = [
+                        "Experience in web development",
+                        "Strong communication skills",
+                        "Proficient in JavaScript",
+                    ];
+
+                    // Simulate points to drop from the resume
+                    const drop = [
+                        "Outdated certifications",
+                        "Irrelevant work experience",
+                    ];
+
+                    // Simulate points to add to the resume
+                    const add = [
+                        "Familiarity with React framework",
+                        "Experience with agile methodologies",
+                    ];
+
+                    // Display results in respective boxes
+                    displayResults("positiveBox", positives);
+                    displayResults("dropBox", drop);
+                    displayResults("addBox", add);
+                }, 2000); // Simulate processing delay
+            });
+
+        function displayResults(containerId, data) {
+            const container = document.getElementById(containerId);
+            const list = container.querySelector("ul");
+            list.innerHTML = ""; // Clear previous results
+
+            data.forEach((item) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = item;
+                list.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+
+</html>
