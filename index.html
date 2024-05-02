@@ -144,7 +144,7 @@
                         progressCircle.style.strokeDashoffset = offset;
 
                         // Handle the response from the server
-                        displayResults("positiveBox", data['resume']["positivwes"]);
+                        displayResults("positiveBox", data['resume']["positives"]);
                         displayResults("dropBox", data['resume']["drop"]);
                         displayResults("addBox", data['resume']["add_from_job_description"]);
                         document.getElementById("retryMessage").classList.add("hidden");
@@ -154,8 +154,6 @@
                         document.getElementById("retryMessage").classList.remove("hidden");
                         // Handle errors
                         document.getElementById("loader").classList.add("hidden"); // Hide loader
-
-                        console.error(error);
                     });
             });
 
