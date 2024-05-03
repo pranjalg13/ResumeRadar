@@ -28,7 +28,7 @@ async function runChat(userInput) {
     const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   
     const generationConfig = {
-      temperature: 0.55,
+      temperature: 0.66,
       topK: 1,
       topP: 1,
       maxOutputTokens: 2048,
